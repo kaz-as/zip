@@ -12,11 +12,11 @@ import (
 )
 
 func Run(cfg *config.Config) {
-	var l logger.Interface = logger.New(cfg.Log.Level)
+	var l logger.Interface = logger.New(cfg.Level)
 
 	r := mux.NewRouter().StrictSlash(true)
-	// todo add routing
-	srv := httpserver.New(r /*todo add options*/)
+
+	srv := httpserver.New(r, httpserver.Port(cfg.Port))
 
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)

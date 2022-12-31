@@ -1,0 +1,42 @@
+consumes:
+    - application/json
+info:
+    description: API for zip processing
+    title: A zip processing specification
+    version: 1.0.0
+paths:
+    /list:
+        get:
+            description: list of files in a zip archive
+            parameters:
+                - name: id
+                  in: query
+                  type: integer
+            responses:
+                200:
+                    description: successfully return list of files
+                    schema:
+                        type: array
+                        description: list of files
+                        items:
+                            $ref: "#/definitions/FileHeader"
+definitions:
+    FileHeader:
+        description: file header
+        properties:
+            id:
+                type: integer
+                format: int64
+                description: file uid
+            name:
+                type: string
+                description: file name
+            size:
+                type: integer
+                format: int64
+                description: file size in bytes
+produces:
+    - application/json
+schemes:
+    - http
+swagger: "2.0"
