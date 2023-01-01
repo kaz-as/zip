@@ -1,42 +1,225 @@
 consumes:
     - application/json
+    - application/octet-stream
 info:
     description: API for zip processing
     title: A zip processing specification
     version: 1.0.0
 paths:
-    /list:
+    /files:
         get:
-            description: list of files in a zip archive
+            summary: list of files in a zip archive
             parameters:
-                - name: id
-                  in: query
-                  type: integer
+                - $ref: "#/parameters/ArchiveID"
+            produces:
+                - application/json
             responses:
                 200:
-                    description: successfully return list of files
+                    description: list of files
                     schema:
                         type: array
                         description: list of files
                         items:
                             $ref: "#/definitions/FileHeader"
+                404:
+                    description: archive not found
+                default:
+                    description: generic error response
+                    schema:
+                        $ref: "#/definitions/error"
+        post:
+            summary: init uploading new zip archive
+            consumes:
+                - application/json
+            produces:
+                - application/json
+            parameters:
+                - in: body
+                  name: archive
+                  schema:
+                      $ref: "#/definitions/Archive"
+            responses:
+                200:
+                    description: new upload initialized
+                    schema:
+                        $ref: "#/definitions/InitUploadSuccess"
+                default:
+                    description: generic error response
+                    schema:
+                        $ref: "#/definitions/error"
+    /files/upload:
+        post:
+            summary: upload a chunk of the previously initialized file
+            consumes:
+                - application/octet-stream
+            produces:
+                - application/json
+            parameters:
+                - $ref: "#/parameters/ArchiveID"
+                - in: body
+                  name: chunk
+                  required: true
+                  schema:
+                      $ref: "#/definitions/ChunkUploadingParam"
+            responses:
+                200:
+                    description: OK uploaded (including already uploaded)
+                default:
+                    description: generic error response
+                    schema:
+                        $ref: "#/definitions/error"
+        get:
+            summary: check which chunks are not uploaded yet
+            parameters:
+                - $ref: "#/parameters/ArchiveID"
+            produces:
+                - application/json
+            responses:
+                200:
+                    description: list of chunks number
+                    schema:
+                        type: array
+                        items:
+                            $ref: "#/definitions/ChunkNumber"
+                404:
+                    description: archive not found
+                default:
+                    description: generic error response
+                    schema:
+                        $ref: "#/definitions/error"
+    /files/zip:
+        post:
+            summary: create zip archive from custom files
+            consumes:
+                - application/json
+            produces:
+                - application/octet-stream
+            parameters:
+                - in: body
+                  name: files
+                  schema:
+                      $ref: "#/definitions/FilesForArchive"
+            responses:
+                200:
+                    description: zip file is producing
+                    schema:
+                        $ref: "#/definitions/ZipProducingSuccess"
+                default:
+                    description: generic error response
+                    schema:
+                        $ref: "#/definitions/error"
+
+parameters:
+    ArchiveID:
+        name: id
+        description: archive uid
+        type: integer
+        format: int64
+        in: query
+        required: true
+
 definitions:
+    error:
+        type: object
+        required:
+            - message
+        properties:
+            code:
+                type: integer
+                format: int64
+            message:
+                type: string
+
+    ArchiveID:
+        type: integer
+        format: int64
+        description: archive uid
+    Size:
+        type: integer
+        format: int64
+        description: size in bytes
+    ChunkNumber:
+        type: integer
+        format: int32
+        description: chunk's number or count
+    FileName:
+        type: string
+        description: file name
+    FilePath:
+        type: array
+        description: file path (without its name) in its source archive
+        items:
+            type: string
+            description: folder name
+    ArchiveName:
+        type: string
+        description: archive name
+
+    Archive:
+        type: object
+        required:
+            - name
+            - size
+        properties:
+            name:
+                $ref: "#/definitions/ArchiveName"
+            size:
+                $ref: "#/definitions/Size"
+
     FileHeader:
+        type: object
         description: file header
+        required:
+            - name
+            - size
+            - path
+        properties:
+            name:
+                $ref: "#/definitions/FileName"
+            size:
+                $ref: "#/definitions/Size"
+            path:
+                $ref: "#/definitions/FilePath"
+
+
+    InitUploadSuccess:
+        type: object
+        description: archive summary
         properties:
             id:
-                type: integer
-                format: int64
-                description: file uid
-            name:
-                type: string
-                description: file name
-            size:
-                type: integer
-                format: int64
-                description: file size in bytes
+                $ref: "#/definitions/ArchiveID"
+            chunks:
+                $ref: "#/definitions/ChunkNumber"
+            each:
+                $ref: "#/definitions/Size"
+
+    FilesForArchive:
+        type: object
+        properties:
+            id:
+                $ref: "#/definitions/ArchiveID"
+            files:
+                type: array
+                items:
+                    type: object
+                    properties:
+                        name:
+                            $ref: "#/definitions/FileName"
+                        path:
+                            $ref: "#/definitions/FilePath"
+                        new-path:
+                            $ref: "#/definitions/FilePath"
+
+    ChunkUploadingParam:
+        type: string
+        format: binary
+    ZipProducingSuccess:
+        type: string
+        format: binary
+
 produces:
     - application/json
+    - application/octet-stream
 schemes:
     - http
 swagger: "2.0"
