@@ -13,7 +13,7 @@ import (
 	"github.com/kaz-as/zip/restapi/operations"
 )
 
-//go:generate swagger generate server --target ..\..\zip --name Zip --spec ..\docs\swagger.yml --principal interface{} --exclude-main
+//go:generate swagger generate server --target .. --name Zip --spec ..\docs\swagger.yml --principal interface{} --exclude-main
 
 func configureFlags(api *operations.ZipAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
