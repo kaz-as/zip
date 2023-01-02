@@ -2,8 +2,8 @@ consumes:
     - application/json
     - application/octet-stream
 info:
+    title: Zip processing
     description: API for zip processing
-    title: A zip processing specification
     version: 1.0.0
 paths:
     /files:
