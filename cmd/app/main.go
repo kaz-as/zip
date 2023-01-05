@@ -1,9 +1,10 @@
 package main
 
 import (
+	"log"
+
 	"github.com/kaz-as/zip/config"
 	"github.com/kaz-as/zip/internal/app"
-	"log"
 )
 
 func main() {

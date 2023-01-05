@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-openapi/loads"
 	"github.com/go-openapi/runtime/middleware"
+
 	"github.com/kaz-as/zip/internal/middlewares"
 	"github.com/kaz-as/zip/pkg/logger"
 	"github.com/kaz-as/zip/restapi"
