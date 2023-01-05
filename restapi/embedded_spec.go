@@ -42,6 +42,7 @@ func init() {
           "application/json"
         ],
         "summary": "list of files in a zip archive",
+        "operationId": "getFiles",
         "parameters": [
           {
             "$ref": "#/parameters/ArchiveID"
@@ -77,6 +78,7 @@ func init() {
           "application/json"
         ],
         "summary": "init uploading new zip archive",
+        "operationId": "initUploadArchive",
         "parameters": [
           {
             "name": "archive",
@@ -108,6 +110,7 @@ func init() {
           "application/json"
         ],
         "summary": "check which chunks are not uploaded yet",
+        "operationId": "checkChunks",
         "parameters": [
           {
             "$ref": "#/parameters/ArchiveID"
@@ -142,6 +145,7 @@ func init() {
           "application/json"
         ],
         "summary": "upload a chunk of the previously initialized file",
+        "operationId": "uploadChunk",
         "parameters": [
           {
             "$ref": "#/parameters/ArchiveID"
@@ -177,6 +181,7 @@ func init() {
           "application/octet-stream"
         ],
         "summary": "create zip archive from custom files",
+        "operationId": "createArchive",
         "parameters": [
           {
             "name": "files",
@@ -370,6 +375,7 @@ func init() {
           "application/json"
         ],
         "summary": "list of files in a zip archive",
+        "operationId": "getFiles",
         "parameters": [
           {
             "type": "integer",
@@ -410,6 +416,7 @@ func init() {
           "application/json"
         ],
         "summary": "init uploading new zip archive",
+        "operationId": "initUploadArchive",
         "parameters": [
           {
             "name": "archive",
@@ -441,6 +448,7 @@ func init() {
           "application/json"
         ],
         "summary": "check which chunks are not uploaded yet",
+        "operationId": "checkChunks",
         "parameters": [
           {
             "type": "integer",
@@ -480,6 +488,7 @@ func init() {
           "application/json"
         ],
         "summary": "upload a chunk of the previously initialized file",
+        "operationId": "uploadChunk",
         "parameters": [
           {
             "type": "integer",
@@ -520,6 +529,7 @@ func init() {
           "application/octet-stream"
         ],
         "summary": "create zip archive from custom files",
+        "operationId": "createArchive",
         "parameters": [
           {
             "name": "files",

@@ -16,19 +16,19 @@ import (
 	"github.com/kaz-as/zip/models"
 )
 
-// NewPostFilesZipParams creates a new PostFilesZipParams object
+// NewInitUploadArchiveParams creates a new InitUploadArchiveParams object
 //
 // There are no default values defined in the spec.
-func NewPostFilesZipParams() PostFilesZipParams {
+func NewInitUploadArchiveParams() InitUploadArchiveParams {
 
-	return PostFilesZipParams{}
+	return InitUploadArchiveParams{}
 }
 
-// PostFilesZipParams contains all the bound params for the post files zip operation
+// InitUploadArchiveParams contains all the bound params for the init upload archive operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters PostFilesZip
-type PostFilesZipParams struct {
+// swagger:parameters initUploadArchive
+type InitUploadArchiveParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
@@ -36,23 +36,23 @@ type PostFilesZipParams struct {
 	/*
 	  In: body
 	*/
-	Files *models.FilesForArchive
+	Archive *models.Archive
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewPostFilesZipParams() beforehand.
-func (o *PostFilesZipParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewInitUploadArchiveParams() beforehand.
+func (o *InitUploadArchiveParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.FilesForArchive
+		var body models.Archive
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
-			res = append(res, errors.NewParseError("files", "body", "", err))
+			res = append(res, errors.NewParseError("archive", "body", "", err))
 		} else {
 			// validate body object
 			if err := body.Validate(route.Formats); err != nil {
@@ -65,7 +65,7 @@ func (o *PostFilesZipParams) BindRequest(r *http.Request, route *middleware.Matc
 			}
 
 			if len(res) == 0 {
-				o.Files = &body
+				o.Archive = &body
 			}
 		}
 	}

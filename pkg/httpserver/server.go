@@ -2,6 +2,7 @@ package httpserver
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"time"
 )
@@ -16,6 +17,7 @@ type Server struct {
 	server          *http.Server
 	notify          chan error
 	shutdownTimeout time.Duration
+	printf          func(string, ...interface{})
 }
 
 func New(handler http.Handler, opts ...Option) *Server {
@@ -29,19 +31,19 @@ func New(handler http.Handler, opts ...Option) *Server {
 		server:          httpServer,
 		notify:          make(chan error, 1),
 		shutdownTimeout: _defaultShutdownTimeout,
+		printf:          log.Printf,
 	}
 
 	for _, opt := range opts {
 		opt(s)
 	}
 
-	s.start()
-
 	return s
 }
 
-func (s *Server) start() {
+func (s *Server) Start() {
 	go func() {
+		s.printf("starting server: '%s'", s.server.Addr)
 		s.notify <- s.server.ListenAndServe()
 		close(s.notify)
 	}()

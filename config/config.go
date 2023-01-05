@@ -9,8 +9,9 @@ import (
 type (
 	// Config -.
 	Config struct {
-		HTTP `yaml:"http"`
-		Log  `yaml:"logger"`
+		HTTP   `yaml:"http"`
+		Log    `yaml:"logger"`
+		Folder string `env-required:"true" yaml:"folder" env:"FOLDER"`
 	}
 
 	// HTTP -.

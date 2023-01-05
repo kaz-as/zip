@@ -3,3 +3,5 @@ http:
 
 logger:
   log_level: 'debug'
+
+folder: 'temp'

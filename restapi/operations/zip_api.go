@@ -44,20 +44,20 @@ func NewZipAPI(spec *loads.Document) *ZipAPI {
 		BinProducer:  runtime.ByteStreamProducer(),
 		JSONProducer: runtime.JSONProducer(),
 
+		CheckChunksHandler: CheckChunksHandlerFunc(func(params CheckChunksParams) middleware.Responder {
+			return middleware.NotImplemented("operation CheckChunks has not yet been implemented")
+		}),
+		CreateArchiveHandler: CreateArchiveHandlerFunc(func(params CreateArchiveParams) middleware.Responder {
+			return middleware.NotImplemented("operation CreateArchive has not yet been implemented")
+		}),
 		GetFilesHandler: GetFilesHandlerFunc(func(params GetFilesParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetFiles has not yet been implemented")
 		}),
-		GetFilesUploadHandler: GetFilesUploadHandlerFunc(func(params GetFilesUploadParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetFilesUpload has not yet been implemented")
+		InitUploadArchiveHandler: InitUploadArchiveHandlerFunc(func(params InitUploadArchiveParams) middleware.Responder {
+			return middleware.NotImplemented("operation InitUploadArchive has not yet been implemented")
 		}),
-		PostFilesHandler: PostFilesHandlerFunc(func(params PostFilesParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostFiles has not yet been implemented")
-		}),
-		PostFilesUploadHandler: PostFilesUploadHandlerFunc(func(params PostFilesUploadParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostFilesUpload has not yet been implemented")
-		}),
-		PostFilesZipHandler: PostFilesZipHandlerFunc(func(params PostFilesZipParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostFilesZip has not yet been implemented")
+		UploadChunkHandler: UploadChunkHandlerFunc(func(params UploadChunkParams) middleware.Responder {
+			return middleware.NotImplemented("operation UploadChunk has not yet been implemented")
 		}),
 	}
 }
@@ -101,16 +101,16 @@ type ZipAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// CheckChunksHandler sets the operation handler for the check chunks operation
+	CheckChunksHandler CheckChunksHandler
+	// CreateArchiveHandler sets the operation handler for the create archive operation
+	CreateArchiveHandler CreateArchiveHandler
 	// GetFilesHandler sets the operation handler for the get files operation
 	GetFilesHandler GetFilesHandler
-	// GetFilesUploadHandler sets the operation handler for the get files upload operation
-	GetFilesUploadHandler GetFilesUploadHandler
-	// PostFilesHandler sets the operation handler for the post files operation
-	PostFilesHandler PostFilesHandler
-	// PostFilesUploadHandler sets the operation handler for the post files upload operation
-	PostFilesUploadHandler PostFilesUploadHandler
-	// PostFilesZipHandler sets the operation handler for the post files zip operation
-	PostFilesZipHandler PostFilesZipHandler
+	// InitUploadArchiveHandler sets the operation handler for the init upload archive operation
+	InitUploadArchiveHandler InitUploadArchiveHandler
+	// UploadChunkHandler sets the operation handler for the upload chunk operation
+	UploadChunkHandler UploadChunkHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -194,20 +194,20 @@ func (o *ZipAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.CheckChunksHandler == nil {
+		unregistered = append(unregistered, "CheckChunksHandler")
+	}
+	if o.CreateArchiveHandler == nil {
+		unregistered = append(unregistered, "CreateArchiveHandler")
+	}
 	if o.GetFilesHandler == nil {
 		unregistered = append(unregistered, "GetFilesHandler")
 	}
-	if o.GetFilesUploadHandler == nil {
-		unregistered = append(unregistered, "GetFilesUploadHandler")
+	if o.InitUploadArchiveHandler == nil {
+		unregistered = append(unregistered, "InitUploadArchiveHandler")
 	}
-	if o.PostFilesHandler == nil {
-		unregistered = append(unregistered, "PostFilesHandler")
-	}
-	if o.PostFilesUploadHandler == nil {
-		unregistered = append(unregistered, "PostFilesUploadHandler")
-	}
-	if o.PostFilesZipHandler == nil {
-		unregistered = append(unregistered, "PostFilesZipHandler")
+	if o.UploadChunkHandler == nil {
+		unregistered = append(unregistered, "UploadChunkHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -304,23 +304,23 @@ func (o *ZipAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/files"] = NewGetFiles(o.context, o.GetFilesHandler)
+	o.handlers["GET"]["/files/upload"] = NewCheckChunks(o.context, o.CheckChunksHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/files/zip"] = NewCreateArchive(o.context, o.CreateArchiveHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/files/upload"] = NewGetFilesUpload(o.context, o.GetFilesUploadHandler)
+	o.handlers["GET"]["/files"] = NewGetFiles(o.context, o.GetFilesHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/files"] = NewPostFiles(o.context, o.PostFilesHandler)
+	o.handlers["POST"]["/files"] = NewInitUploadArchive(o.context, o.InitUploadArchiveHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/files/upload"] = NewPostFilesUpload(o.context, o.PostFilesUploadHandler)
-	if o.handlers["POST"] == nil {
-		o.handlers["POST"] = make(map[string]http.Handler)
-	}
-	o.handlers["POST"]["/files/zip"] = NewPostFilesZip(o.context, o.PostFilesZipHandler)
+	o.handlers["POST"]["/files/upload"] = NewUploadChunk(o.context, o.UploadChunkHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

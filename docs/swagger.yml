@@ -9,6 +9,7 @@ paths:
     /files:
         get:
             summary: list of files in a zip archive
+            operationId: getFiles
             parameters:
                 - $ref: "#/parameters/ArchiveID"
             produces:
@@ -29,6 +30,7 @@ paths:
                         $ref: "#/definitions/error"
         post:
             summary: init uploading new zip archive
+            operationId: initUploadArchive
             consumes:
                 - application/json
             produces:
@@ -50,6 +52,7 @@ paths:
     /files/upload:
         post:
             summary: upload a chunk of the previously initialized file
+            operationId: uploadChunk
             consumes:
                 - application/octet-stream
             produces:
@@ -70,6 +73,7 @@ paths:
                         $ref: "#/definitions/error"
         get:
             summary: check which chunks are not uploaded yet
+            operationId: checkChunks
             parameters:
                 - $ref: "#/parameters/ArchiveID"
             produces:
@@ -90,6 +94,7 @@ paths:
     /files/zip:
         post:
             summary: create zip archive from custom files
+            operationId: createArchive
             consumes:
                 - application/json
             produces:

@@ -18,19 +18,19 @@ import (
 	"github.com/kaz-as/zip/models"
 )
 
-// NewPostFilesUploadParams creates a new PostFilesUploadParams object
+// NewUploadChunkParams creates a new UploadChunkParams object
 //
 // There are no default values defined in the spec.
-func NewPostFilesUploadParams() PostFilesUploadParams {
+func NewUploadChunkParams() UploadChunkParams {
 
-	return PostFilesUploadParams{}
+	return UploadChunkParams{}
 }
 
-// PostFilesUploadParams contains all the bound params for the post files upload operation
+// UploadChunkParams contains all the bound params for the upload chunk operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters PostFilesUpload
-type PostFilesUploadParams struct {
+// swagger:parameters uploadChunk
+type UploadChunkParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
@@ -50,8 +50,8 @@ type PostFilesUploadParams struct {
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewPostFilesUploadParams() beforehand.
-func (o *PostFilesUploadParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewUploadChunkParams() beforehand.
+func (o *UploadChunkParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
@@ -75,7 +75,7 @@ func (o *PostFilesUploadParams) BindRequest(r *http.Request, route *middleware.M
 }
 
 // bindID binds and validates parameter ID from query.
-func (o *PostFilesUploadParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *UploadChunkParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
 		return errors.Required("id", "query", rawData)
 	}

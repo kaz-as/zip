@@ -11,15 +11,15 @@ import (
 	golangswaggerpaths "path"
 )
 
-// PostFilesURL generates an URL for the post files operation
-type PostFilesURL struct {
+// CreateArchiveURL generates an URL for the create archive operation
+type CreateArchiveURL struct {
 	_basePath string
 }
 
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *PostFilesURL) WithBasePath(bp string) *PostFilesURL {
+func (o *CreateArchiveURL) WithBasePath(bp string) *CreateArchiveURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -27,15 +27,15 @@ func (o *PostFilesURL) WithBasePath(bp string) *PostFilesURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *PostFilesURL) SetBasePath(bp string) {
+func (o *CreateArchiveURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *PostFilesURL) Build() (*url.URL, error) {
+func (o *CreateArchiveURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/files"
+	var _path = "/files/zip"
 
 	_basePath := o._basePath
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
@@ -44,7 +44,7 @@ func (o *PostFilesURL) Build() (*url.URL, error) {
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *PostFilesURL) Must(u *url.URL, err error) *url.URL {
+func (o *CreateArchiveURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -55,17 +55,17 @@ func (o *PostFilesURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *PostFilesURL) String() string {
+func (o *CreateArchiveURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *PostFilesURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *CreateArchiveURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on PostFilesURL")
+		return nil, errors.New("scheme is required for a full url on CreateArchiveURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on PostFilesURL")
+		return nil, errors.New("host is required for a full url on CreateArchiveURL")
 	}
 
 	base, err := o.Build()
@@ -79,6 +79,6 @@ func (o *PostFilesURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *PostFilesURL) StringFull(scheme, host string) string {
+func (o *CreateArchiveURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

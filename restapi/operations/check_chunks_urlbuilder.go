@@ -9,17 +9,23 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
+
+	"github.com/go-openapi/swag"
 )
 
-// PostFilesZipURL generates an URL for the post files zip operation
-type PostFilesZipURL struct {
+// CheckChunksURL generates an URL for the check chunks operation
+type CheckChunksURL struct {
+	ID int64
+
 	_basePath string
+	// avoid unkeyed usage
+	_ struct{}
 }
 
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *PostFilesZipURL) WithBasePath(bp string) *PostFilesZipURL {
+func (o *CheckChunksURL) WithBasePath(bp string) *CheckChunksURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -27,24 +33,33 @@ func (o *PostFilesZipURL) WithBasePath(bp string) *PostFilesZipURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *PostFilesZipURL) SetBasePath(bp string) {
+func (o *CheckChunksURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *PostFilesZipURL) Build() (*url.URL, error) {
+func (o *CheckChunksURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/files/zip"
+	var _path = "/files/upload"
 
 	_basePath := o._basePath
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
+
+	qs := make(url.Values)
+
+	idQ := swag.FormatInt64(o.ID)
+	if idQ != "" {
+		qs.Set("id", idQ)
+	}
+
+	_result.RawQuery = qs.Encode()
 
 	return &_result, nil
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *PostFilesZipURL) Must(u *url.URL, err error) *url.URL {
+func (o *CheckChunksURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -55,17 +70,17 @@ func (o *PostFilesZipURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *PostFilesZipURL) String() string {
+func (o *CheckChunksURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *PostFilesZipURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *CheckChunksURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on PostFilesZipURL")
+		return nil, errors.New("scheme is required for a full url on CheckChunksURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on PostFilesZipURL")
+		return nil, errors.New("host is required for a full url on CheckChunksURL")
 	}
 
 	base, err := o.Build()
@@ -79,6 +94,6 @@ func (o *PostFilesZipURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *PostFilesZipURL) StringFull(scheme, host string) string {
+func (o *CheckChunksURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

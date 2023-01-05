@@ -12,5 +12,13 @@ func main() {
 		log.Fatalf("Config error: %s", err)
 	}
 
-	app.Run(cfg)
+	application, err := app.New(cfg)
+	if err != nil {
+		log.Fatalf("Application create error: %s", err)
+	}
+
+	err = application.Run()
+	if err != nil {
+		log.Fatalf("Application error: %s", err)
+	}
 }
