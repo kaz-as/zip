@@ -156,6 +156,7 @@ definitions:
         items:
             type: string
             description: folder name
+            pattern: ^[a-zA-Z0-9._-][a-zA-Z0-9._ -]*$
     ArchiveName:
         type: string
         description: archive name
@@ -212,6 +213,8 @@ definitions:
                             $ref: "#/definitions/FileName"
                         path:
                             $ref: "#/definitions/FilePath"
+                        new-name:
+                            $ref: "#/definitions/FileName"
                         new-path:
                             $ref: "#/definitions/FilePath"
 

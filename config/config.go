@@ -7,21 +7,27 @@ import (
 )
 
 type (
-	// Config -.
 	Config struct {
 		HTTP   `yaml:"http"`
 		Log    `yaml:"logger"`
+		DB     DB     `yaml:"db"`
 		Folder string `env-required:"true" yaml:"folder" env:"FOLDER"`
 	}
 
-	// HTTP -.
 	HTTP struct {
 		Port string `env-required:"true" yaml:"port" env:"HTTP_PORT"`
 	}
 
-	// Log -.
 	Log struct {
 		Level string `env-required:"true" yaml:"log_level" env:"LOG_LEVEL"`
+	}
+
+	DB struct {
+		Host string `env-required:"true" yaml:"host" env:"DB_HOST"`
+		Port string `env-required:"true" yaml:"port" env:"DB_PORT"`
+		User string `env-required:"true" yaml:"user" env:"DB_USER"`
+		Pass string `env-required:"true" yaml:"pass" env:"DB_PASS"`
+		Name string `env-required:"true" yaml:"name" env:"DB_NAME"`
 	}
 )
 

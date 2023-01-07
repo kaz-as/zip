@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+  app:
+    build: ./docker/go
+    entrypoint: sleep infinity
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/backend
+    container_name: zip-go
+    hostname: zip-go
+    working_dir: /backend
+
+  swagger:
+    image: quay.io/goswagger/swagger
+    environment:
+      GOPATH: /go
+    volumes:
+      - .:/go/src/zip
+    working_dir: /go/src/zip
+    entrypoint: sleep infinity
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: zip
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/postgres/pgdata:/var/lib/postgresql/data/pgdata
+    container_name: zip-pg
+    hostname: zip-pg

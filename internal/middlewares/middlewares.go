@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/kaz-as/zip/pkg/logger"
@@ -42,6 +43,18 @@ func Recoverer(l logger.Interface) Middleware {
 			defer func() {
 				if rec := recover(); rec != nil {
 					l.Error("panic: %v", rec)
+					jsonBody, _ := json.Marshal(map[string]string{
+						"error": "There was an internal server error",
+					})
+
+					if w.Header() != nil {
+						w.Header().Set("Content-Type", "application/json")
+					}
+					w.WriteHeader(http.StatusInternalServerError)
+					_, err := w.Write(jsonBody)
+					if err != nil {
+						l.Error("cannot write internal server error: %s", err)
+					}
 				}
 			}()
 			next.ServeHTTP(w, r)
