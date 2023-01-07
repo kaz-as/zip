@@ -2,18 +2,36 @@
 
 ## Overview
 
-This is an API for zipping and unzipping.
+This is an API for zipping (with output archive streaming) and unzipping (with chunk uploading).
 
-To read documentation and try requests, build the [application](cmd/app/main.go) and run it with
-`--port <your-port-number>`. Docs are at `localhost:<your-port-number/docs`
+To read documentation and try requests, run `make run` from `zip-go` container. Docs will be at http://localhost:8080/docs
 
-## Generate code from swagger
+## Generate code from documentation
 
-Firstly, install `swagger` from [here](https://github.com/go-swagger/go-swagger/releases/tag/v0.30.3).
+Run `make gen` from `zip-gen` container.
 
-Then run the commands below inside the project root.
+Do not create files `restapi/configure_zip.go`, `restapi/server.go` by your own: they are deleted by `make gen`.
 
+## Migrations
+
+Should be run from `zip-go` container.
+
+Up:
 ```bash
-swagger generate server -A Zip --spec docs/swagger.yml --exclude-main
-rm restapi/configure_zip.go restapi/server.go
+make migrate.up
+```
+
+Down:
+```bash
+make migrate.down
+```
+
+Status:
+```bash
+make migrate.status
+```
+
+Create new migration with name `new123`:
+```bash
+make migrate.new migration_name=new123
 ```

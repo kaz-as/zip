@@ -20,6 +20,8 @@ services:
       - .:/go/src/zip
     working_dir: /go/src/zip
     entrypoint: sleep infinity
+    hostname: zip-gen
+    container_name: zip-gen
 
   db:
     image: postgres

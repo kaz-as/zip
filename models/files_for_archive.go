@@ -165,6 +165,9 @@ type FilesForArchiveFilesItems0 struct {
 	// name
 	Name FileName `json:"name,omitempty"`
 
+	// new name
+	NewName FileName `json:"new-name,omitempty"`
+
 	// new path
 	NewPath FilePath `json:"new-path,omitempty"`
 
@@ -177,6 +180,10 @@ func (m *FilesForArchiveFilesItems0) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateName(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateNewName(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -204,6 +211,23 @@ func (m *FilesForArchiveFilesItems0) validateName(formats strfmt.Registry) error
 			return ve.ValidateName("name")
 		} else if ce, ok := err.(*errors.CompositeError); ok {
 			return ce.ValidateName("name")
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (m *FilesForArchiveFilesItems0) validateNewName(formats strfmt.Registry) error {
+	if swag.IsZero(m.NewName) { // not required
+		return nil
+	}
+
+	if err := m.NewName.Validate(formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("new-name")
+		} else if ce, ok := err.(*errors.CompositeError); ok {
+			return ce.ValidateName("new-name")
 		}
 		return err
 	}
@@ -253,6 +277,10 @@ func (m *FilesForArchiveFilesItems0) ContextValidate(ctx context.Context, format
 		res = append(res, err)
 	}
 
+	if err := m.contextValidateNewName(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.contextValidateNewPath(ctx, formats); err != nil {
 		res = append(res, err)
 	}
@@ -274,6 +302,20 @@ func (m *FilesForArchiveFilesItems0) contextValidateName(ctx context.Context, fo
 			return ve.ValidateName("name")
 		} else if ce, ok := err.(*errors.CompositeError); ok {
 			return ce.ValidateName("name")
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (m *FilesForArchiveFilesItems0) contextValidateNewName(ctx context.Context, formats strfmt.Registry) error {
+
+	if err := m.NewName.ContextValidate(ctx, formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("new-name")
+		} else if ce, ok := err.(*errors.CompositeError); ok {
+			return ce.ValidateName("new-name")
 		}
 		return err
 	}

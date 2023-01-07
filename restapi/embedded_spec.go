@@ -271,7 +271,8 @@ func init() {
       "type": "array",
       "items": {
         "description": "folder name",
-        "type": "string"
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9._-][a-zA-Z0-9._ -]*$"
       }
     },
     "FilesForArchive": {
@@ -283,6 +284,9 @@ func init() {
             "type": "object",
             "properties": {
               "name": {
+                "$ref": "#/definitions/FileName"
+              },
+              "new-name": {
                 "$ref": "#/definitions/FileName"
               },
               "new-path": {
@@ -619,7 +623,8 @@ func init() {
       "type": "array",
       "items": {
         "description": "folder name",
-        "type": "string"
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9._-][a-zA-Z0-9._ -]*$"
       }
     },
     "FilesForArchive": {
@@ -640,6 +645,9 @@ func init() {
       "type": "object",
       "properties": {
         "name": {
+          "$ref": "#/definitions/FileName"
+        },
+        "new-name": {
           "$ref": "#/definitions/FileName"
         },
         "new-path": {

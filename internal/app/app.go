@@ -30,7 +30,7 @@ func New(cfg *config.Config) (app App, _ error) {
 
 	app.log = l
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", cfg.DB.User, cfg.DB.Pass, cfg.DB.Host, cfg.DB.Port, cfg.DB.Name)
+	dsn := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s", cfg.DB.User, cfg.DB.Pass, cfg.DB.Host, cfg.DB.Port, cfg.DB.Name)
 	app.conn, err = sql.Open("pgx", dsn)
 	if err != nil {
 		return app, fmt.Errorf("db open: %s", err)
