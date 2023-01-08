@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/ilyakaznacheev/cleanenv"
 )
@@ -23,11 +24,12 @@ type (
 	}
 
 	DB struct {
-		Host string `env-required:"true" yaml:"host" env:"DB_HOST"`
-		Port string `env-required:"true" yaml:"port" env:"DB_PORT"`
-		User string `env-required:"true" yaml:"user" env:"DB_USER"`
-		Pass string `env-required:"true" yaml:"pass" env:"DB_PASS"`
-		Name string `env-required:"true" yaml:"name" env:"DB_NAME"`
+		Host    string        `env-required:"true" yaml:"host" env:"DB_HOST"`
+		Port    string        `env-required:"true" yaml:"port" env:"DB_PORT"`
+		User    string        `env-required:"true" yaml:"user" env:"DB_USER"`
+		Pass    string        `env-required:"true" yaml:"pass" env:"DB_PASS"`
+		Name    string        `env-required:"true" yaml:"name" env:"DB_NAME"`
+		Timeout time.Duration `env-default:"500ms" yaml:"timeout" env:"DB_TIMEOUT"`
 	}
 )
 

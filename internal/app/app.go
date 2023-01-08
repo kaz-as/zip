@@ -3,6 +3,9 @@ package app
 import (
 	"database/sql"
 	"fmt"
+	archiverepo "github.com/kaz-as/zip/internal/archive/repository/postgres"
+	"github.com/kaz-as/zip/internal/archive/usecase"
+	chunkrepo "github.com/kaz-as/zip/internal/chunk/repository/postgres"
 	"os"
 	"os/signal"
 	"syscall"
@@ -42,7 +45,13 @@ func New(cfg *config.Config) (app App, _ error) {
 
 	archiveService := archive.NewService()
 
-	h, err := handlers.New(l,
+	archiveRepo := archiverepo.New(app.conn)
+	chunkRepo := chunkrepo.New(app.conn)
+	archiveUseCase := usecase.New(archiveRepo, chunkRepo, cfg.DB.Timeout)
+
+	h, err := handlers.New(
+		l,
+		archiveUseCase,
 		archiveService,
 		[]middlewares.Middleware{})
 	if err != nil {
