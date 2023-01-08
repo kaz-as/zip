@@ -1,5 +1,3 @@
-port = 8080
-
 db_host = zip-pg
 db_port = 5432
 db_user = root
@@ -26,7 +24,7 @@ migrate.new:
 
 run:
 	go build -o bin/zip_from_docker github.com/kaz-as/zip/cmd/app && \
-    ./bin/zip_from_docker --port ${port}
+    ./bin/zip_from_docker
 
 ## zip-gen:
 
