@@ -31,6 +31,11 @@ func (a *archiveUseCase) GetChunkForUpdate(ctx context.Context, archiveID int64,
 	panic("implement me")
 }
 
+func (a *archiveUseCase) GetUncompletedChunks(ctx context.Context, archiveID int64) ([]domain.Chunk, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (a *archiveUseCase) Store(ctx context.Context, archive *domain.Archive) ([]domain.Chunk, error) {
 	//TODO implement me
 	panic("implement me")

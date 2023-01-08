@@ -276,30 +276,33 @@ func init() {
       }
     },
     "FilesForArchive": {
-      "type": "object",
-      "properties": {
-        "files": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "$ref": "#/definitions/FileName"
-              },
-              "new-name": {
-                "$ref": "#/definitions/FileName"
-              },
-              "new-path": {
-                "$ref": "#/definitions/FilePath"
-              },
-              "path": {
-                "$ref": "#/definitions/FilePath"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/definitions/FileName"
+                },
+                "new-name": {
+                  "$ref": "#/definitions/FileName"
+                },
+                "new-path": {
+                  "$ref": "#/definitions/FilePath"
+                },
+                "path": {
+                  "$ref": "#/definitions/FilePath"
+                }
               }
             }
+          },
+          "id": {
+            "$ref": "#/definitions/ArchiveID"
           }
-        },
-        "id": {
-          "$ref": "#/definitions/ArchiveID"
         }
       }
     },
@@ -628,12 +631,18 @@ func init() {
       }
     },
     "FilesForArchive": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/FilesForArchiveItems0"
+      }
+    },
+    "FilesForArchiveItems0": {
       "type": "object",
       "properties": {
         "files": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/FilesForArchiveFilesItems0"
+            "$ref": "#/definitions/FilesForArchiveItems0FilesItems0"
           }
         },
         "id": {
@@ -641,7 +650,7 @@ func init() {
         }
       }
     },
-    "FilesForArchiveFilesItems0": {
+    "FilesForArchiveItems0FilesItems0": {
       "type": "object",
       "properties": {
         "name": {

@@ -11,4 +11,5 @@ db:
   pass: root
   name: zip
 
-folder: 'temp'
+folder_for_files: 'storage_files'
+folder_for_archives: 'storage_archives'

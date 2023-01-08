@@ -16,6 +16,7 @@ type Chunk struct {
 
 type ChunkRepository interface {
 	GetByNumber(archiveID int64, number int32) (Chunk, error)
+	GetUncompleted(archiveID int64) ([]Chunk, error)
 	Update(context.Context, *Chunk) error
 	Store(context.Context, *Chunk) error
 	DeleteAll(ctx context.Context, archiveID int64) error

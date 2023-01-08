@@ -3,9 +3,6 @@ package app
 import (
 	"database/sql"
 	"fmt"
-	archiverepo "github.com/kaz-as/zip/internal/archive/repository/postgres"
-	"github.com/kaz-as/zip/internal/archive/usecase"
-	chunkrepo "github.com/kaz-as/zip/internal/chunk/repository/postgres"
 	"os"
 	"os/signal"
 	"syscall"
@@ -13,9 +10,13 @@ import (
 	_ "github.com/jackc/pgx/v5/stdlib"
 
 	"github.com/kaz-as/zip/config"
+	archiverepo "github.com/kaz-as/zip/internal/archive/repository/postgres"
+	"github.com/kaz-as/zip/internal/archive/usecase"
+	chunkrepo "github.com/kaz-as/zip/internal/chunk/repository/postgres"
 	"github.com/kaz-as/zip/internal/handlers"
 	"github.com/kaz-as/zip/internal/middlewares"
 	"github.com/kaz-as/zip/pkg/archive"
+	"github.com/kaz-as/zip/pkg/chunkwriter"
 	"github.com/kaz-as/zip/pkg/httpserver"
 	"github.com/kaz-as/zip/pkg/logger"
 )
@@ -44,6 +45,7 @@ func New(cfg *config.Config) (app App, _ error) {
 	}
 
 	archiveService := archive.NewService()
+	chunkWriterService := chunkwriter.NewService()
 
 	archiveRepo := archiverepo.New(app.conn)
 	chunkRepo := chunkrepo.New(app.conn)
@@ -51,8 +53,12 @@ func New(cfg *config.Config) (app App, _ error) {
 
 	h, err := handlers.New(
 		l,
+		app.conn,
 		archiveUseCase,
 		archiveService,
+		chunkWriterService,
+		cfg.FolderForFiles,
+		cfg.FolderForArchives,
 		[]middlewares.Middleware{})
 	if err != nil {
 		return app, fmt.Errorf("creating main handler: %s", err)

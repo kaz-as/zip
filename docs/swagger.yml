@@ -200,23 +200,25 @@ definitions:
                 $ref: "#/definitions/Size"
 
     FilesForArchive:
-        type: object
-        properties:
-            id:
-                $ref: "#/definitions/ArchiveID"
-            files:
-                type: array
-                items:
-                    type: object
-                    properties:
-                        name:
-                            $ref: "#/definitions/FileName"
-                        path:
-                            $ref: "#/definitions/FilePath"
-                        new-name:
-                            $ref: "#/definitions/FileName"
-                        new-path:
-                            $ref: "#/definitions/FilePath"
+        type: array
+        items:
+            type: object
+            properties:
+                id:
+                    $ref: "#/definitions/ArchiveID"
+                files:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                $ref: "#/definitions/FileName"
+                            path:
+                                $ref: "#/definitions/FilePath"
+                            new-name:
+                                $ref: "#/definitions/FileName"
+                            new-path:
+                                $ref: "#/definitions/FilePath"
 
     ChunkUploadingParam:
         type: string

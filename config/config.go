@@ -9,10 +9,11 @@ import (
 
 type (
 	Config struct {
-		HTTP   `yaml:"http"`
-		Log    `yaml:"logger"`
-		DB     DB     `yaml:"db"`
-		Folder string `env-required:"true" yaml:"folder" env:"FOLDER"`
+		HTTP              `yaml:"http"`
+		Log               `yaml:"logger"`
+		DB                DB     `yaml:"db"`
+		FolderForFiles    string `env-required:"true" yaml:"folder_for_files" env:"FOLDER_FOR_FILES"`
+		FolderForArchives string `env-required:"true" yaml:"folder_for_archives" env:"FOLDER_FOR_ARCHIVES"`
 	}
 
 	HTTP struct {

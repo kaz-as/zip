@@ -22,6 +22,11 @@ func (p postgresChunkRepo) GetByNumber(archiveID int64, number int32) (domain.Ch
 	panic("implement me")
 }
 
+func (p postgresChunkRepo) GetUncompleted(archiveID int64) ([]domain.Chunk, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (p postgresChunkRepo) Update(ctx context.Context, chunk *domain.Chunk) error {
 	//TODO implement me
 	panic("implement me")
