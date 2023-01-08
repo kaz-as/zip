@@ -15,6 +15,32 @@ import (
 	"github.com/kaz-as/zip/restapi/operations"
 )
 
+type handlerSet struct {
+	log            logger.Interface
+	archiveUseCase domain.ArchiveUseCase
+	archiveService archive.Archiver
+}
+
+func (s *handlerSet) checkChunksHandler(params operations.CheckChunksParams) middleware.Responder {
+	return middleware.NotImplemented("operation CheckChunks has not yet been implemented")
+}
+
+func (s *handlerSet) createArchiveHandler(params operations.CreateArchiveParams) middleware.Responder {
+	return middleware.NotImplemented("operation CreateArchive has not yet been implemented")
+}
+
+func (s *handlerSet) getFilesHandler(params operations.GetFilesParams) middleware.Responder {
+	return middleware.NotImplemented("operation GetFiles has not yet been implemented")
+}
+
+func (s *handlerSet) initUploadArchiveHandler(params operations.InitUploadArchiveParams) middleware.Responder {
+	return middleware.NotImplemented("operation InitUploadArchive has not yet been implemented")
+}
+
+func (s *handlerSet) uploadChunkHandler(params operations.UploadChunkParams) middleware.Responder {
+	return middleware.NotImplemented("operation UploadChunk has not yet been implemented")
+}
+
 // New creates handler using middlewares running after routing
 func New(
 	l logger.Interface,
@@ -31,7 +57,17 @@ func New(
 	api.Logger = l.Info
 	api.UseSwaggerUI()
 
-	// todo add exact handlers, using use-case and archive service
+	hSet := handlerSet{
+		log:            l,
+		archiveUseCase: archiveUseCase,
+		archiveService: archiveService,
+	}
+
+	api.CheckChunksHandler = operations.CheckChunksHandlerFunc(hSet.checkChunksHandler)
+	api.CreateArchiveHandler = operations.CreateArchiveHandlerFunc(hSet.createArchiveHandler)
+	api.GetFilesHandler = operations.GetFilesHandlerFunc(hSet.getFilesHandler)
+	api.InitUploadArchiveHandler = operations.InitUploadArchiveHandlerFunc(hSet.initUploadArchiveHandler)
+	api.UploadChunkHandler = operations.UploadChunkHandlerFunc(hSet.uploadChunkHandler)
 
 	return api.Serve(middleware.Builder(middlewares.Chain(mws))), nil
 }
