@@ -305,7 +305,7 @@ func (s *HandlerSet) startUnzipping(id int64) {
 			}
 		}()
 
-		err = s.ArchiveService.Unzip(ctx, a, filepath.Join(s.FolderForFiles, arch.Original))
+		err = s.ArchiveService.Unzip(ctx, a, arch.Size, filepath.Join(s.FolderForFiles, arch.Original))
 		if err != nil {
 			s.Log.Error("cannot unzip archive id=%v: %s", arch.ID, err)
 			return

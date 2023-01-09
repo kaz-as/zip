@@ -50,8 +50,8 @@ func New(cfg *config.Config) (app App, _ error) {
 		return app, fmt.Errorf("db ping: %s", err)
 	}
 
-	archiveService := archive.NewService()
-	chunkWriterService := chunkwriter.NewService()
+	archiveService := archive.NewService(l)
+	chunkWriterService := chunkwriter.NewService(l)
 
 	archiveRepo := archiverepo.New(db)
 	chunkRepo := chunkrepo.New(db)

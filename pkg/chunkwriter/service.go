@@ -4,6 +4,8 @@ import (
 	"io"
 	"os"
 	"sync"
+
+	"github.com/kaz-as/zip/pkg/logger"
 )
 
 type ChunkWriter interface {
@@ -16,12 +18,15 @@ type file struct {
 }
 
 type ChunkService struct {
+	l logger.Interface
+
 	mx    sync.Mutex
 	files map[string]file
 }
 
-func NewService() *ChunkService {
+func NewService(l logger.Interface) *ChunkService {
 	return &ChunkService{
+		l:     l,
 		mx:    sync.Mutex{},
 		files: make(map[string]file),
 	}
