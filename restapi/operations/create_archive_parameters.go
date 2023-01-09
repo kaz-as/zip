@@ -36,7 +36,7 @@ type CreateArchiveParams struct {
 	/*
 	  In: body
 	*/
-	Files *models.FilesForArchive
+	Files models.FilesForArchive
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -65,7 +65,7 @@ func (o *CreateArchiveParams) BindRequest(r *http.Request, route *middleware.Mat
 			}
 
 			if len(res) == 0 {
-				o.Files = &body
+				o.Files = body
 			}
 		}
 	}

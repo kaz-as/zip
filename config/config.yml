@@ -4,4 +4,12 @@ http:
 logger:
   log_level: 'debug'
 
-folder: 'temp'
+db:
+  host: zip-pg
+  port: 5432
+  user: root
+  pass: root
+  name: zip
+
+folder_for_files: 'storage_files'
+folder_for_archives: 'storage_archives'

@@ -151,6 +151,9 @@ func init() {
             "$ref": "#/parameters/ArchiveID"
           },
           {
+            "$ref": "#/parameters/ChunkNumber"
+          },
+          {
             "name": "chunk",
             "in": "body",
             "required": true,
@@ -162,6 +165,35 @@ func init() {
         "responses": {
           "200": {
             "description": "OK uploaded (including already uploaded)"
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "head": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "check if archive is completed (unarchived)",
+        "operationId": "isCompleted",
+        "parameters": [
+          {
+            "$ref": "#/parameters/ArchiveID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "is archive completed",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "404": {
+            "description": "archive not found"
           },
           "default": {
             "description": "generic error response",
@@ -271,31 +303,38 @@ func init() {
       "type": "array",
       "items": {
         "description": "folder name",
-        "type": "string"
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9._-][a-zA-Z0-9._ -]*$"
       }
     },
     "FilesForArchive": {
-      "type": "object",
-      "properties": {
-        "files": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "$ref": "#/definitions/FileName"
-              },
-              "new-path": {
-                "$ref": "#/definitions/FilePath"
-              },
-              "path": {
-                "$ref": "#/definitions/FilePath"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/definitions/FileName"
+                },
+                "new-name": {
+                  "$ref": "#/definitions/FileName"
+                },
+                "new-path": {
+                  "$ref": "#/definitions/FilePath"
+                },
+                "path": {
+                  "$ref": "#/definitions/FilePath"
+                }
               }
             }
+          },
+          "id": {
+            "$ref": "#/definitions/ArchiveID"
           }
-        },
-        "id": {
-          "$ref": "#/definitions/ArchiveID"
         }
       }
     },
@@ -345,6 +384,14 @@ func init() {
       "format": "int64",
       "description": "archive uid",
       "name": "id",
+      "in": "query",
+      "required": true
+    },
+    "ChunkNumber": {
+      "type": "integer",
+      "format": "int32",
+      "description": "chunk's number or count",
+      "name": "chunk",
       "in": "query",
       "required": true
     }
@@ -499,6 +546,14 @@ func init() {
             "required": true
           },
           {
+            "type": "integer",
+            "format": "int32",
+            "description": "chunk's number or count",
+            "name": "chunk",
+            "in": "query",
+            "required": true
+          },
+          {
             "name": "chunk",
             "in": "body",
             "required": true,
@@ -510,6 +565,40 @@ func init() {
         "responses": {
           "200": {
             "description": "OK uploaded (including already uploaded)"
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "head": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "check if archive is completed (unarchived)",
+        "operationId": "isCompleted",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "archive uid",
+            "name": "id",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "is archive completed",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "404": {
+            "description": "archive not found"
           },
           "default": {
             "description": "generic error response",
@@ -619,16 +708,23 @@ func init() {
       "type": "array",
       "items": {
         "description": "folder name",
-        "type": "string"
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9._-][a-zA-Z0-9._ -]*$"
       }
     },
     "FilesForArchive": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/FilesForArchiveItems0"
+      }
+    },
+    "FilesForArchiveItems0": {
       "type": "object",
       "properties": {
         "files": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/FilesForArchiveFilesItems0"
+            "$ref": "#/definitions/FilesForArchiveItems0FilesItems0"
           }
         },
         "id": {
@@ -636,10 +732,13 @@ func init() {
         }
       }
     },
-    "FilesForArchiveFilesItems0": {
+    "FilesForArchiveItems0FilesItems0": {
       "type": "object",
       "properties": {
         "name": {
+          "$ref": "#/definitions/FileName"
+        },
+        "new-name": {
           "$ref": "#/definitions/FileName"
         },
         "new-path": {
@@ -696,6 +795,14 @@ func init() {
       "format": "int64",
       "description": "archive uid",
       "name": "id",
+      "in": "query",
+      "required": true
+    },
+    "ChunkNumber": {
+      "type": "integer",
+      "format": "int32",
+      "description": "chunk's number or count",
+      "name": "chunk",
       "in": "query",
       "required": true
     }

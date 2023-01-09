@@ -56,6 +56,9 @@ func NewZipAPI(spec *loads.Document) *ZipAPI {
 		InitUploadArchiveHandler: InitUploadArchiveHandlerFunc(func(params InitUploadArchiveParams) middleware.Responder {
 			return middleware.NotImplemented("operation InitUploadArchive has not yet been implemented")
 		}),
+		IsCompletedHandler: IsCompletedHandlerFunc(func(params IsCompletedParams) middleware.Responder {
+			return middleware.NotImplemented("operation IsCompleted has not yet been implemented")
+		}),
 		UploadChunkHandler: UploadChunkHandlerFunc(func(params UploadChunkParams) middleware.Responder {
 			return middleware.NotImplemented("operation UploadChunk has not yet been implemented")
 		}),
@@ -109,6 +112,8 @@ type ZipAPI struct {
 	GetFilesHandler GetFilesHandler
 	// InitUploadArchiveHandler sets the operation handler for the init upload archive operation
 	InitUploadArchiveHandler InitUploadArchiveHandler
+	// IsCompletedHandler sets the operation handler for the is completed operation
+	IsCompletedHandler IsCompletedHandler
 	// UploadChunkHandler sets the operation handler for the upload chunk operation
 	UploadChunkHandler UploadChunkHandler
 
@@ -205,6 +210,9 @@ func (o *ZipAPI) Validate() error {
 	}
 	if o.InitUploadArchiveHandler == nil {
 		unregistered = append(unregistered, "InitUploadArchiveHandler")
+	}
+	if o.IsCompletedHandler == nil {
+		unregistered = append(unregistered, "IsCompletedHandler")
 	}
 	if o.UploadChunkHandler == nil {
 		unregistered = append(unregistered, "UploadChunkHandler")
@@ -317,6 +325,10 @@ func (o *ZipAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/files"] = NewInitUploadArchive(o.context, o.InitUploadArchiveHandler)
+	if o.handlers["HEAD"] == nil {
+		o.handlers["HEAD"] = make(map[string]http.Handler)
+	}
+	o.handlers["HEAD"]["/files/upload"] = NewIsCompleted(o.context, o.IsCompletedHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

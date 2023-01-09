@@ -167,6 +167,9 @@ func TestRecoverer(t *testing.T) {
 		t.Fatal("message is not logged yet")
 	}
 
+	assert.NotEmpty(t, wr.sb.String(), "error should be sent to the response if panics")
+	wr.sb.Reset()
+
 	Recoverer(l)(hNormal).ServeHTTP(wr, nil)
 
 	select {
@@ -174,4 +177,6 @@ func TestRecoverer(t *testing.T) {
 		t.Fatalf("no panic -> no message, but got: %s", msg)
 	case <-time.After(time.Millisecond * 300):
 	}
+
+	assert.Empty(t, wr.sb.String(), "no error should be sent to the response if not panics")
 }

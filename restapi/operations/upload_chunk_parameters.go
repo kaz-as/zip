@@ -35,6 +35,11 @@ type UploadChunkParams struct {
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
+	/*chunk's number or count
+	  Required: true
+	  In: query
+	*/
+	QueryChunk int32
 	/*
 	  Required: true
 	  In: body
@@ -58,6 +63,11 @@ func (o *UploadChunkParams) BindRequest(r *http.Request, route *middleware.Match
 
 	qs := runtime.Values(r.URL.Query())
 
+	qChunk, qhkChunk, _ := qs.GetOK("chunk")
+	if err := o.bindQueryChunk(qChunk, qhkChunk, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
 	if runtime.HasBody(r) {
 		o.Chunk = r.Body
 	} else {
@@ -71,6 +81,32 @@ func (o *UploadChunkParams) BindRequest(r *http.Request, route *middleware.Match
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+// bindQueryChunk binds and validates parameter QueryChunk from query.
+func (o *UploadChunkParams) bindQueryChunk(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	if !hasKey {
+		return errors.Required("chunk", "query", rawData)
+	}
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+
+	// Required: true
+	// AllowEmptyValue: false
+
+	if err := validate.RequiredString("chunk", "query", raw); err != nil {
+		return err
+	}
+
+	value, err := swag.ConvertInt32(raw)
+	if err != nil {
+		return errors.InvalidType("chunk", "query", "int32", raw)
+	}
+	o.QueryChunk = value
+
 	return nil
 }
 

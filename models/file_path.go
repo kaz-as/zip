@@ -7,8 +7,11 @@ package models
 
 import (
 	"context"
+	"strconv"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/validate"
 )
 
 // FilePath file path (without its name) in its source archive
@@ -18,6 +21,19 @@ type FilePath []string
 
 // Validate validates this file path
 func (m FilePath) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	for i := 0; i < len(m); i++ {
+
+		if err := validate.Pattern(strconv.Itoa(i), "body", m[i], `^[a-zA-Z0-9._-][a-zA-Z0-9._ -]*$`); err != nil {
+			return err
+		}
+
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
 	return nil
 }
 
