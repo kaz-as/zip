@@ -13,10 +13,9 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// UploadChunkURL generates an URL for the upload chunk operation
-type UploadChunkURL struct {
-	QueryChunk int32
-	ID         int64
+// IsCompletedURL generates an URL for the is completed operation
+type IsCompletedURL struct {
+	ID int64
 
 	_basePath string
 	// avoid unkeyed usage
@@ -26,7 +25,7 @@ type UploadChunkURL struct {
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *UploadChunkURL) WithBasePath(bp string) *UploadChunkURL {
+func (o *IsCompletedURL) WithBasePath(bp string) *IsCompletedURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -34,12 +33,12 @@ func (o *UploadChunkURL) WithBasePath(bp string) *UploadChunkURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *UploadChunkURL) SetBasePath(bp string) {
+func (o *IsCompletedURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *UploadChunkURL) Build() (*url.URL, error) {
+func (o *IsCompletedURL) Build() (*url.URL, error) {
 	var _result url.URL
 
 	var _path = "/files/upload"
@@ -48,11 +47,6 @@ func (o *UploadChunkURL) Build() (*url.URL, error) {
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
 
 	qs := make(url.Values)
-
-	queryChunkQ := swag.FormatInt32(o.QueryChunk)
-	if queryChunkQ != "" {
-		qs.Set("chunk", queryChunkQ)
-	}
 
 	idQ := swag.FormatInt64(o.ID)
 	if idQ != "" {
@@ -65,7 +59,7 @@ func (o *UploadChunkURL) Build() (*url.URL, error) {
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *UploadChunkURL) Must(u *url.URL, err error) *url.URL {
+func (o *IsCompletedURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -76,17 +70,17 @@ func (o *UploadChunkURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *UploadChunkURL) String() string {
+func (o *IsCompletedURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *UploadChunkURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *IsCompletedURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on UploadChunkURL")
+		return nil, errors.New("scheme is required for a full url on IsCompletedURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on UploadChunkURL")
+		return nil, errors.New("host is required for a full url on IsCompletedURL")
 	}
 
 	base, err := o.Build()
@@ -100,6 +94,6 @@ func (o *UploadChunkURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *UploadChunkURL) StringFull(scheme, host string) string {
+func (o *IsCompletedURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

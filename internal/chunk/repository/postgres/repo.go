@@ -17,27 +17,27 @@ func New(db *sql.DB) domain.ChunkRepository {
 	}
 }
 
-func (p postgresChunkRepo) GetByNumber(archiveID int64, number int32) (domain.Chunk, error) {
+func (p postgresChunkRepo) GetByNumber(ctx context.Context, tx *sql.Tx, archiveID int64, number int32) (domain.Chunk, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (p postgresChunkRepo) GetUncompleted(archiveID int64) ([]domain.Chunk, error) {
+func (p postgresChunkRepo) GetUncompleted(ctx context.Context, tx *sql.Tx, archiveID int64) ([]domain.Chunk, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (p postgresChunkRepo) Update(ctx context.Context, chunk *domain.Chunk) error {
+func (p postgresChunkRepo) Update(ctx context.Context, tx *sql.Tx, chunk *domain.Chunk) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (p postgresChunkRepo) Store(ctx context.Context, chunk *domain.Chunk) error {
+func (p postgresChunkRepo) Store(ctx context.Context, tx *sql.Tx, chunk *domain.Chunk) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (p postgresChunkRepo) DeleteAll(ctx context.Context, archiveID int64) error {
+func (p postgresChunkRepo) DeleteAll(ctx context.Context, tx *sql.Tx, archiveID int64) error {
 	//TODO implement me
 	panic("implement me")
 }

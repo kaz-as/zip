@@ -2,6 +2,7 @@ package domain
 
 import (
 	"context"
+	"database/sql"
 	"time"
 )
 
@@ -15,9 +16,9 @@ type Chunk struct {
 }
 
 type ChunkRepository interface {
-	GetByNumber(archiveID int64, number int32) (Chunk, error)
-	GetUncompleted(archiveID int64) ([]Chunk, error)
-	Update(context.Context, *Chunk) error
-	Store(context.Context, *Chunk) error
-	DeleteAll(ctx context.Context, archiveID int64) error
+	GetByNumber(ctx context.Context, tx *sql.Tx, archiveID int64, number int32) (Chunk, error)
+	GetUncompleted(ctx context.Context, tx *sql.Tx, archiveID int64) ([]Chunk, error)
+	Update(context.Context, *sql.Tx, *Chunk) error
+	Store(context.Context, *sql.Tx, *Chunk) error
+	DeleteAll(ctx context.Context, tx *sql.Tx, archiveID int64) error
 }

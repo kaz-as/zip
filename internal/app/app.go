@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 
@@ -28,18 +29,23 @@ type App struct {
 }
 
 func New(cfg *config.Config) (app App, _ error) {
-	var err error
-
 	var l logger.Interface = logger.New(cfg.Level)
 
 	app.log = l
 
 	dsn := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s", cfg.DB.User, cfg.DB.Pass, cfg.DB.Host, cfg.DB.Port, cfg.DB.Name)
-	app.conn, err = sql.Open("pgx", dsn)
+	db, err := sql.Open("pgx", dsn)
 	if err != nil {
 		return app, fmt.Errorf("db open: %s", err)
 	}
-	err = app.conn.Ping()
+
+	app.conn = db
+
+	db.SetConnMaxIdleTime(time.Minute * 3)
+	db.SetMaxOpenConns(10)
+	db.SetMaxIdleConns(10)
+
+	err = db.Ping()
 	if err != nil {
 		return app, fmt.Errorf("db ping: %s", err)
 	}
@@ -47,14 +53,14 @@ func New(cfg *config.Config) (app App, _ error) {
 	archiveService := archive.NewService()
 	chunkWriterService := chunkwriter.NewService()
 
-	archiveRepo := archiverepo.New(app.conn)
-	chunkRepo := chunkrepo.New(app.conn)
-	archiveUseCase := usecase.New(archiveRepo, chunkRepo, cfg.DB.Timeout)
+	archiveRepo := archiverepo.New(db)
+	chunkRepo := chunkrepo.New(db)
+	archiveUseCaseMaker := usecase.NewMaker(archiveRepo, chunkRepo, cfg.DB.Timeout)
 
 	h, err := handlers.New(
 		l,
-		app.conn,
-		archiveUseCase,
+		db,
+		archiveUseCaseMaker,
 		archiveService,
 		chunkWriterService,
 		cfg.FolderForFiles,

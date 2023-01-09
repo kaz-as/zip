@@ -17,22 +17,32 @@ func New(db *sql.DB) domain.ArchiveRepository {
 	}
 }
 
-func (p postgresArchiveRepo) GetByID(ctx context.Context, id int64) (domain.Archive, error) {
+func (p postgresArchiveRepo) GetByID(ctx context.Context, tx *sql.Tx, id int64) (domain.Archive, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (p postgresArchiveRepo) Update(ctx context.Context, archive *domain.Archive) error {
+func (p postgresArchiveRepo) Update(ctx context.Context, tx *sql.Tx, archive *domain.Archive) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (p postgresArchiveRepo) Store(ctx context.Context, archive *domain.Archive) error {
+func (p postgresArchiveRepo) Store(ctx context.Context, tx *sql.Tx, archive *domain.Archive) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (p postgresArchiveRepo) Delete(ctx context.Context, id int64) error {
+func (p postgresArchiveRepo) Delete(ctx context.Context, tx *sql.Tx, id int64) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (p postgresArchiveRepo) CheckCompleted(ctx context.Context, tx *sql.Tx, id int64) (bool, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (p postgresArchiveRepo) SetCompleted(ctx context.Context, tx *sql.Tx, id int64, isCompleted bool) error {
 	//TODO implement me
 	panic("implement me")
 }
