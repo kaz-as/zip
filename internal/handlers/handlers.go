@@ -174,6 +174,13 @@ func (s *HandlerSet) InitUploadArchiveHandler(params operations.InitUploadArchiv
 }
 
 func (s *HandlerSet) UploadChunkHandler(params operations.UploadChunkParams) middleware.Responder {
+	defer func() {
+		err := params.Chunk.Close()
+		if err != nil {
+			s.Log.Error("chunk stream closing failed: %s", err)
+		}
+	}()
+
 	ctx := params.HTTPRequest.Context()
 
 	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelReadCommitted})
@@ -305,7 +312,7 @@ func (s *HandlerSet) startUnzipping(id int64) {
 			}
 		}()
 
-		err = s.ArchiveService.Unzip(ctx, a, filepath.Join(s.FolderForFiles, arch.Original))
+		err = s.ArchiveService.Unzip(ctx, a, arch.Size, filepath.Join(s.FolderForFiles, arch.Original))
 		if err != nil {
 			s.Log.Error("cannot unzip archive id=%v: %s", arch.ID, err)
 			return
