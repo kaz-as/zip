@@ -174,6 +174,13 @@ func (s *HandlerSet) InitUploadArchiveHandler(params operations.InitUploadArchiv
 }
 
 func (s *HandlerSet) UploadChunkHandler(params operations.UploadChunkParams) middleware.Responder {
+	defer func() {
+		err := params.Chunk.Close()
+		if err != nil {
+			s.Log.Error("chunk stream closing failed: %s", err)
+		}
+	}()
+
 	ctx := params.HTTPRequest.Context()
 
 	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelReadCommitted})

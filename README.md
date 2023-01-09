@@ -35,3 +35,8 @@ Create new migration with name `new123`:
 ```bash
 make migrate.new migration_name=new123
 ```
+
+## TODO
+
+1. Add read/write timeouts to all file descriptors.
+2. Extract async part (unzipping) from handler set.

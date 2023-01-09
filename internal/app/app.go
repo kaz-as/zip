@@ -52,6 +52,12 @@ func New(cfg *config.Config) (app App, _ error) {
 
 	archiveService := archive.NewService(l)
 	chunkWriterService := chunkwriter.NewService(l)
+	defer func() {
+		err := chunkWriterService.Close()
+		if err != nil {
+			l.Error("chunk writer service closing failed: %s", err)
+		}
+	}()
 
 	archiveRepo := archiverepo.New(db)
 	chunkRepo := chunkrepo.New(db)
