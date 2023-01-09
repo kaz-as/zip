@@ -3,8 +3,10 @@ package archive
 import (
 	"archive/zip"
 	"context"
+	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -100,7 +102,7 @@ func (a *Service) Unzip(_ context.Context, archive io.ReaderAt, size int64, dest
 	}
 
 	err = os.MkdirAll(dest, 0755)
-	if err != nil {
+	if err != nil && !errors.Is(err, fs.ErrExist) {
 		return fmt.Errorf("create folder %s failed: %w", dest, err)
 	}
 
@@ -108,11 +110,11 @@ func (a *Service) Unzip(_ context.Context, archive io.ReaderAt, size int64, dest
 	extractAndWriteFile := func(f *zip.File) error {
 		rc, err := f.Open()
 		if err != nil {
-			return err
+			return fmt.Errorf("zip file object opening: %s", err)
 		}
 		defer func() {
 			if err := rc.Close(); err != nil {
-				panic(err)
+				a.l.Error("zip file object closing: %s", err)
 			}
 		}()
 
@@ -125,29 +127,29 @@ func (a *Service) Unzip(_ context.Context, archive io.ReaderAt, size int64, dest
 
 		if f.FileInfo().IsDir() {
 			err = os.MkdirAll(path, f.Mode())
-			if err != nil {
+			if err != nil && !errors.Is(err, fs.ErrExist) {
 				return fmt.Errorf("create folder %s failed: %w", path, err)
 			}
 		} else {
 			pth := filepath.Dir(path)
 			err = os.MkdirAll(pth, f.Mode())
-			if err != nil {
+			if err != nil && !errors.Is(err, fs.ErrExist) {
 				return fmt.Errorf("create folder %s failed: %w", pth, err)
 			}
 
 			f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
 			if err != nil {
-				return err
+				return fmt.Errorf("open file %s failed: %w", path, err)
 			}
 			defer func() {
 				if err := f.Close(); err != nil {
-					panic(err)
+					a.l.Error("file object closing: %s", err)
 				}
 			}()
 
 			_, err = io.Copy(f, rc)
 			if err != nil {
-				return err
+				return fmt.Errorf("io.Copy failed: %w", err)
 			}
 		}
 		return nil
