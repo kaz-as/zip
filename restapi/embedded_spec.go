@@ -263,7 +263,8 @@ func init() {
     },
     "ArchiveName": {
       "description": "archive name",
-      "type": "string"
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._-][a-zA-Z0-9._ -]{,63}$"
     },
     "ChunkNumber": {
       "description": "chunk's number or count",
@@ -296,15 +297,17 @@ func init() {
     },
     "FileName": {
       "description": "file name",
-      "type": "string"
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._-][a-zA-Z0-9._ -]{,63}$"
     },
     "FilePath": {
       "description": "file path (without its name) in its source archive",
       "type": "array",
+      "maxItems": 4,
       "items": {
         "description": "folder name",
         "type": "string",
-        "pattern": "^[a-zA-Z0-9._-][a-zA-Z0-9._ -]*$"
+        "pattern": "^[a-zA-Z0-9._-][a-zA-Z0-9._ -]{,31}$"
       }
     },
     "FilesForArchive": {
@@ -668,7 +671,8 @@ func init() {
     },
     "ArchiveName": {
       "description": "archive name",
-      "type": "string"
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._-][a-zA-Z0-9._ -]{,63}$"
     },
     "ChunkNumber": {
       "description": "chunk's number or count",
@@ -701,15 +705,17 @@ func init() {
     },
     "FileName": {
       "description": "file name",
-      "type": "string"
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._-][a-zA-Z0-9._ -]{,63}$"
     },
     "FilePath": {
       "description": "file path (without its name) in its source archive",
       "type": "array",
+      "maxItems": 4,
       "items": {
         "description": "folder name",
         "type": "string",
-        "pattern": "^[a-zA-Z0-9._-][a-zA-Z0-9._ -]*$"
+        "pattern": "^[a-zA-Z0-9._-][a-zA-Z0-9._ -]{,31}$"
       }
     },
     "FilesForArchive": {
