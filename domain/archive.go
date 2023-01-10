@@ -16,12 +16,6 @@ type Archive struct {
 	Unarchived bool
 }
 
-type File struct {
-	RelativePath []string // Relative path to a folder containing the file
-	Name         string
-	Archive      *Archive
-}
-
 type ArchiveRepository interface {
 	GetByID(ctx context.Context, tx *sql.Tx, id int64) (Archive, error)
 	Update(context.Context, *sql.Tx, *Archive) error

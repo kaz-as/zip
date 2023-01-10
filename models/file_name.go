@@ -8,7 +8,9 @@ package models
 import (
 	"context"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/validate"
 )
 
 // FileName file name
@@ -18,6 +20,15 @@ type FileName string
 
 // Validate validates this file name
 func (m FileName) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := validate.Pattern("", "body", string(m), `^[a-zA-Z0-9._-][a-zA-Z0-9._ -]{,63}$`); err != nil {
+		return err
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
 	return nil
 }
 

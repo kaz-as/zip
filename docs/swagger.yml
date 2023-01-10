@@ -175,16 +175,19 @@ definitions:
         description: chunk's number or count
     FileName:
         type: string
+        pattern: ^[a-zA-Z0-9._-][a-zA-Z0-9._ -]{,63}$
         description: file name
     FilePath:
         type: array
+        maxItems: 4
         description: file path (without its name) in its source archive
         items:
             type: string
             description: folder name
-            pattern: ^[a-zA-Z0-9._-][a-zA-Z0-9._ -]*$
+            pattern: ^[a-zA-Z0-9._-][a-zA-Z0-9._ -]{,31}$
     ArchiveName:
         type: string
+        pattern: ^[a-zA-Z0-9._-][a-zA-Z0-9._ -]{,63}$
         description: archive name
 
     Archive:

@@ -59,7 +59,7 @@ func New(cfg *config.Config) (app App, _ error) {
 		}
 	}()
 
-	archiveRepo := archiverepo.New(db)
+	archiveRepo := archiverepo.New(db, l)
 	chunkRepo := chunkrepo.New(db)
 	archiveUseCaseMaker := usecase.NewMaker(archiveRepo, chunkRepo, cfg.DB.Timeout)
 

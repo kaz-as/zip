@@ -23,9 +23,15 @@ type FilePath []string
 func (m FilePath) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	iFilePathSize := int64(len(m))
+
+	if err := validate.MaxItems("", "body", iFilePathSize, 4); err != nil {
+		return err
+	}
+
 	for i := 0; i < len(m); i++ {
 
-		if err := validate.Pattern(strconv.Itoa(i), "body", m[i], `^[a-zA-Z0-9._-][a-zA-Z0-9._ -]*$`); err != nil {
+		if err := validate.Pattern(strconv.Itoa(i), "body", m[i], `^[a-zA-Z0-9._-][a-zA-Z0-9._ -]{,31}$`); err != nil {
 			return err
 		}
 
