@@ -217,7 +217,8 @@ func (s *HandlerSet) UploadChunkHandler(params operations.UploadChunkParams) mid
 	}
 
 	chunk.Uploaded = true
-	chunk.UploadedTime = time.Now()
+	now := time.Now()
+	chunk.UploadedTime = &now
 	err = uc.UpdateChunk(ctx, &chunk)
 	if err != nil {
 		s.Log.Error("update chunk failed: %s", err)
