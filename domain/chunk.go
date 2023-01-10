@@ -11,7 +11,7 @@ type Chunk struct {
 	StartByte     int64
 	NextChunkByte int64
 	Uploaded      bool
-	UploadedTime  time.Time
+	UploadedTime  *time.Time
 	Archive       *Archive
 }
 
