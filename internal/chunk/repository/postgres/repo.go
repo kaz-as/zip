@@ -32,7 +32,7 @@ func (p postgresChunkRepo) Update(ctx context.Context, tx *sql.Tx, chunk *domain
 	panic("implement me")
 }
 
-func (p postgresChunkRepo) Store(ctx context.Context, tx *sql.Tx, chunk *domain.Chunk) error {
+func (p postgresChunkRepo) Store(ctx context.Context, tx *sql.Tx, chunk *[]domain.Chunk) error {
 	//TODO implement me
 	panic("implement me")
 }

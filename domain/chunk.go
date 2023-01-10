@@ -16,9 +16,12 @@ type Chunk struct {
 }
 
 type ChunkRepository interface {
+	// GetByNumber gets FOR UPDATE
 	GetByNumber(ctx context.Context, tx *sql.Tx, archiveID int64, number int32) (Chunk, error)
 	GetUncompleted(ctx context.Context, tx *sql.Tx, archiveID int64) ([]Chunk, error)
+	// Update with update param's data if necessary
 	Update(context.Context, *sql.Tx, *Chunk) error
-	Store(context.Context, *sql.Tx, *Chunk) error
+	// Store with update param's data if necessary
+	Store(context.Context, *sql.Tx, *[]Chunk) error
 	DeleteAll(ctx context.Context, tx *sql.Tx, archiveID int64) error
 }
