@@ -38,8 +38,6 @@ type ArchiveUseCase interface {
 	GetUncompletedChunks(ctx context.Context, archiveID int64) ([]Chunk, error)
 	Store(context.Context, *Archive) ([]Chunk, error)
 	Delete(ctx context.Context, id int64) error
-	GetFiles(ctx context.Context, id int64) ([]File, error)
-	GetFile(ctx context.Context, id int64, path []string, name string) (File, error)
 	CheckCompleted(ctx context.Context, id int64) (bool, error)
 	SetCompleted(ctx context.Context, id int64, isCompleted bool) error
 }
