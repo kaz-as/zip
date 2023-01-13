@@ -38,7 +38,8 @@ make migrate.new migration_name=new123
 
 ## TODO
 
-1. Add read/write timeouts to all file descriptors.
-2. Extract async part (unzipping) from handler set.
-3. Check idempotency of archive initialization: it probably is idempotent,
+1. Add integration and many unit tests, make the product ready to minimal use, fix bugs - to 16 January.
+2. Add read/write timeouts to all file descriptors.
+3. Extract async part (unzipping) from handler set.
+4. Check idempotency of archive initialization: it probably is idempotent,
 but it should not create a huge file on the hard drive on the init request.
